@@ -1,14 +1,15 @@
 #include "get_next_line.h"
 
-static size_t find_line_size(int fd, char c, size_t i)
+static size_t find_line_size(int fd, char c, size_t i, char *storage)
 {
 	while(c != '\n')
 	{
 		read(fd, &c, 1);
+		storage[i] = c;
 		i++;
 	}
 
-	printf("allocated %zu bytes\n", i);
+	//printf("allocated %zu bytes\n", i);
 	return (i);
 }
 
@@ -23,14 +24,14 @@ static char *read_line(int fd)
 	storage = NULL;
 	tmp = '\0';
 
-	line_buffer = find_line_size(fd, tmp, i);
+	line_buffer = find_line_size(fd, tmp, i, storage);
 
 	storage = malloc(line_buffer + 1);
 	if(!storage)
 		return(NULL);
 
-	i += line_buffer;
-	read(fd, storage, i);
+	if(line_buffer < BUFFER_SIZE)
+		read(fd, storage, line_buffer);
 
 	printf("%s", storage);
 	return(storage);
@@ -46,7 +47,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 
 	line = read_line(fd);
-
 	if(!line)
 		return (NULL);
 	else
