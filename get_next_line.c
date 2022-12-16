@@ -1,49 +1,93 @@
 #include "get_next_line.h"
 
-static int read_line(int fd)
+static size_t find_line_size(int fd, char c, size_t i)
 {
-	char *storage;
-	char tmp[1];
-	size_t i;
-
-
-	storage = malloc(BUFFER_SIZE + 1);
-	if(!storage)
-		return (0);
-	
-	tmp[0] = '\0';
-
-	i = 0;
-	while(i < BUFFER_SIZE)
+	while(c != '\n')
 	{
-		if (read(fd, tmp, 1) < 0)
-			return(0);
-		
-		if (tmp[0] == '\n')
-		{
-			printf("new line\n");
-			printf("%s_\n", storage);
-
-			return(1);
-
-		}
-		else
-			storage[i] = tmp[0];
+		read(fd, &c, 1);
 		i++;
 	}
 
-
-	printf("%s\n", storage);
-	printf("\n\nBUFFER SIZE IS = %d\n", BUFFER_SIZE);
-	return(1);
+	printf("allocated %zu bytes\n", i);
+	return (i);
 }
+
+
+static char *read_line(int fd)
+{
+	char *storage;
+	char tmp;
+	static size_t i;
+	size_t line_buffer;
+
+	storage = NULL;
+	tmp = '\0';
+
+	line_buffer = find_line_size(fd, tmp, i);
+
+	storage = malloc(line_buffer + 1);
+	if(!storage)
+		return(NULL);
+
+	i += line_buffer;
+	read(fd, storage, i);
+
+	printf("%s", storage);
+	return(storage);
+}
+
 
 char	*get_next_line(int fd)
 {
+	char *line;
+
+	line = NULL;
 	if(!fd || fd < 0)
 		return (NULL);
-	if(!read_line(fd))
-		return (NULL);
 
-	return(0);
+	line = read_line(fd);
+
+	if(!line)
+		return (NULL);
+	else
+		return(line);
 }
+
+
+
+// static int read_line(int fd)
+// {
+// 	char *storage;
+// 	char tmp[1];
+// 	static size_t i;
+
+
+// 	storage = malloc(BUFFER_SIZE + 1);
+// 	if(!storage)
+// 		return (0);
+	
+// 	tmp[0] = '\0';
+
+// 	i = 0;
+// 	while(i < BUFFER_SIZE)
+// 	{
+// 		if (read(fd, tmp, 1) < 0)
+// 			return(0);
+// 		if (tmp[0] == '\n')
+// 		{
+// 			printf("[NEW LINE DETECTED] %s\n", storage);
+// 			i++;
+// 			return(1);
+// 		}
+// 		else
+// 		{
+// 			storage[i] = tmp[0];
+// 		}
+// 		i++;
+// 	}
+
+
+// 	printf("[NEWLINE NOT DETECTED] 	%s\n", storage);
+// 	//printf("\n\nBUFFER SIZE IS = %d\n", BUFFER_SIZE);
+// 	return(1);
+// }
