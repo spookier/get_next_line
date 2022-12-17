@@ -8,5 +8,5 @@ int main(void)
 	get_next_line(fd);
 	//get_next_line(fd);
 	close(fd);
-}
 
+}
