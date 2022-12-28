@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-static char *cut_newline(char *storage)
+static char *cut_newline(char **storage)
 {
 	int index;
 	char *before_newline;
@@ -8,19 +8,17 @@ static char *cut_newline(char *storage)
 
 	after_newline = NULL;
 	before_newline = NULL;
-	index = ft_strchr(storage, '\n');
+	index = ft_strchr(*storage, '\n');
 
-	before_newline = ft_substr(storage, 0, index + 1);
+	before_newline = ft_substr(*storage, 0, index + 1);
 
-	after_newline = ft_substr((storage), ft_strlen(before_newline), ft_strlen(storage));
-	//printf("static remaining = %s\n\n", storage);
-	storage = after_newline;
+	after_newline = ft_substr((*storage), ft_strlen(before_newline), ft_strlen(*storage));
+	*storage = after_newline;
 
-	//printf("\nwhat's left inside static = %s \n\n", storage);
 	return (before_newline);
 }
 
-static char *read_line(int fd, char *storage, char *tmp)
+static char *read_line(int fd, char **storage, char *tmp)
 {
 	tmp = malloc(BUFFER_SIZE + 1);
 	int	read_flag;
@@ -29,8 +27,8 @@ static char *read_line(int fd, char *storage, char *tmp)
 	index = -1;
 	if(tmp == NULL)
 		return (NULL);
-	if (storage != NULL)
-		index = ft_strchr(storage, '\n');
+	if (*storage != NULL)
+		index = ft_strchr(*storage, '\n');
 	while (1)
 	{
 		if (index >= 0)
@@ -38,12 +36,11 @@ static char *read_line(int fd, char *storage, char *tmp)
 		read_flag = read(fd, tmp, BUFFER_SIZE);
 		if(read_flag < 0)
 			return(NULL);
-			printf("will add %s ++ %s\n\n", storage, tmp);
-		storage = ft_strjoin(storage, tmp);
-		index = ft_strchr(storage, '\n');
+			//printf("will add %s ++ %s\n\n", *storage, tmp);
+		*storage = ft_strjoin(*storage, tmp);
+		index = ft_strchr(*storage, '\n');
 	}
 	return(cut_newline(storage));
-	//return (storage);
 }
 
 char *get_next_line(int fd)
@@ -56,13 +53,13 @@ char *get_next_line(int fd)
 	if (!fd || fd < 0)
 		return(NULL);
 
-	line = read_line(fd, storage, line);
+	line = read_line(fd, &storage, line);
 	
 	if(!line)
 		return (NULL);
 	else
 	{
-		printf("static: %s_\n", storage);
+		//printf("static: %s_\n", storage);
 		return (line);
 	}
 }
