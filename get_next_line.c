@@ -6,16 +6,18 @@ static char *cut_newline(char *storage)
 	char *before_newline;
 	char *after_newline;
 
+	after_newline = NULL;
+	before_newline = NULL;
 	index = ft_strchr(storage, '\n');
 
-	before_newline = ft_substr(storage, 0, index);
-	
-	after_newline = ft_substr(storage,
-		(ft_strlen(storage) - ft_strlen	(before_newline)),
-		ft_strlen(storage));
+	before_newline = ft_substr(storage, 0, index + 1);
+
+	after_newline = ft_substr((storage), ft_strlen(before_newline), ft_strlen(storage));
+	//printf("static remaining = %s\n\n", storage);
 	storage = after_newline;
-	printf("after newline: %s\n", storage);
-	return(before_newline);
+
+	//printf("\nwhat's left inside static = %s \n\n", storage);
+	return (before_newline);
 }
 
 static char *read_line(int fd, char *storage, char *tmp)
@@ -34,15 +36,14 @@ static char *read_line(int fd, char *storage, char *tmp)
 		if (index >= 0)
 			break ;
 		read_flag = read(fd, tmp, BUFFER_SIZE);
-		//printf("tmp : %s\n", tmp);
 		if(read_flag < 0)
 			return(NULL);
+			printf("will add %s ++ %s\n\n", storage, tmp);
 		storage = ft_strjoin(storage, tmp);
-		//printf("storage : %s\n", storage);
 		index = ft_strchr(storage, '\n');
 	}
-	
 	return(cut_newline(storage));
+	//return (storage);
 }
 
 char *get_next_line(int fd)
@@ -50,15 +51,18 @@ char *get_next_line(int fd)
 	static char *storage;
 	char *line;
 
-	storage = NULL;
 	line = NULL;
 
 	if (!fd || fd < 0)
 		return(NULL);
 
 	line = read_line(fd, storage, line);
+	
 	if(!line)
 		return (NULL);
 	else
+	{
+		printf("static: %s_\n", storage);
 		return (line);
+	}
 }
