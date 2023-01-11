@@ -6,12 +6,14 @@
 /*   By: acostin <acostin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:36:47 by acostin           #+#    #+#             */
-/*   Updated: 2023/01/11 13:37:18 by acostin          ###   ########.fr       */
+/*   Updated: 2023/01/11 14:15:48 by acostin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+
+//join storage and buffer together
 char	*read_line(int fd, char *storage)
 {
 	char	*buffer;

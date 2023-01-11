@@ -6,7 +6,7 @@
 /*   By: acostin <acostin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:36:43 by acostin           #+#    #+#             */
-/*   Updated: 2023/01/11 13:42:43 by acostin          ###   ########.fr       */
+/*   Updated: 2023/01/11 14:44:58 by acostin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,61 +42,61 @@ char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
-char	*ft_strjoin(char *backup, char *buf)
+char	*ft_strjoin(char *storage, char *buf)
 {
 	size_t	i;
 	size_t	j;
 	char	*new_str;
 
-	if (!backup)
+	if (!storage)
 	{
-		backup = (char *)malloc(sizeof(char) * 1);
-		backup[0] = '\0';
+		storage = (char *)malloc(sizeof(char) * 1);
+		storage[0] = '\0';
 	}
-	if (!backup || !buf)
+	if (!storage || !buf)
 		return (NULL);
-	new_str = malloc(sizeof(char) * ((ft_strlen(backup) + ft_strlen(buf))
+	new_str = malloc(sizeof(char) * ((ft_strlen(storage) + ft_strlen(buf))
 				+ 1));
 	if (new_str == NULL)
 		return (NULL);
 	i = -1;
 	j = 0;
-	if (backup)
-		while (backup[++i] != '\0')
-			new_str[i] = backup[i];
+	if (storage)
+		while (storage[++i] != '\0')
+			new_str[i] = storage[i];
 	while (buf[j] != '\0')
 		new_str[i++] = buf[j++];
-	new_str[ft_strlen(backup) + ft_strlen(buf)] = '\0';
-	free(backup);
+	new_str[ft_strlen(storage) + ft_strlen(buf)] = '\0';
+	free(storage);
 	return (new_str);
 }
 
 char	*get_line(char *storage)
 {
 	int		i;
-	char	*line_to_read;
+	char	*line;
 
 	i = 0;
 	if (!storage[i])
 		return (NULL);
 	while (storage[i] && storage[i] != '\n')
 		i++;
-	line_to_read = (char *)malloc(sizeof(char) * (i + 2));
-	if (!line_to_read)
+	line = (char *)malloc(sizeof(char) * (i + 2));
+	if (!line)
 		return (NULL);
 	i = 0;
 	while (storage[i] && storage[i] != '\n')
 	{
-		line_to_read[i] = storage[i];
+		line[i] = storage[i];
 		i++;
 	}
 	if (storage[i] == '\n')
 	{
-		line_to_read[i] = storage[i];
+		line[i] = storage[i];
 		i++;
 	}
-	line_to_read[i] = '\0';
-	return (line_to_read);
+	line[i] = '\0';
+	return (line);
 }
 
 char	*new_storage(char *storage)
