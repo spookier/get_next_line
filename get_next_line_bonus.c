@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acostin <acostin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 13:36:47 by acostin           #+#    #+#             */
-/*   Updated: 2023/03/20 15:22:57 by acostin          ###   ########.fr       */
+/*   Created: 2023/03/20 15:27:30 by acostin           #+#    #+#             */
+/*   Updated: 2023/03/20 15:34:56 by acostin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_line(int fd, char *storage)
 {
@@ -39,14 +39,14 @@ char	*read_line(int fd, char *storage)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*storage;
+	static char	*storage[256];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 256 || BUFFER_SIZE <= 0)
 		return (0);
-	storage = read_line(fd, storage);
-	if (!storage)
+	storage[fd] = read_line(fd, storage[fd]);
+	if (!storage[fd])
 		return (NULL);
-	line = get_line(storage);
-	storage = new_storage(storage);
+	line = get_line(storage[fd]);
+	storage[fd] = new_storage(storage[fd]);
 	return (line);
 }

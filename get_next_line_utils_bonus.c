@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acostin <acostin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/11 13:36:43 by acostin           #+#    #+#             */
-/*   Updated: 2023/03/20 15:13:37 by acostin          ###   ########.fr       */
+/*   Created: 2023/03/20 15:27:22 by acostin           #+#    #+#             */
+/*   Updated: 2023/03/20 15:28:19 by acostin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *s)
 {
